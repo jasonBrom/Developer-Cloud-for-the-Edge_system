@@ -1,4 +1,7 @@
 FROM centos
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/*.repo
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=https://mirrors.tuna.tsinghua.edu.cn|g' /etc/yum.repos.d/*.repo
+RUN yum makecache
 RUN yum update -y
 RUN yum install qemu-kvm font* xz dbus-x11 curl firefox gnome-system-monitor git xfce4-terminal tigervnc-server wget -y
 RUN wget https://github.com/novnc/noVNC/archive/refs/tags/v1.2.0.tar.gz
