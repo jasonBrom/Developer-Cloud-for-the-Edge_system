@@ -1,6 +1,8 @@
 FROM ubuntu
 RUN apt-get update
-RUN DEBIAN_FRONTEND=noninteractive apt-get install qemu-kvm fonts-wqy-zenhei xz-utils dbus-x11 curl firefox gnome-system-monitor mate-system-monitor git xfce4 xfce4-terminal tightvncserver wget -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y qemu-kvm fonts-wqy-zenhei xz-utils dbus-x11 curl firefox gnome-system-monitor mate-system-monitor git xfce4 xfce4-terminal tightvncserver wget iputils-ping sudo
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+RUN dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
 RUN wget https://github.com/novnc/noVNC/archive/refs/tags/v1.2.0.tar.gz
 RUN curl -LO https://proot.gitlab.io/proot/bin/proot
 RUN chmod 755 proot
