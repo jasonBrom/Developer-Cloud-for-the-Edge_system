@@ -1,17 +1,30 @@
-# 使用kestr3l/stable-diffusion-webui镜像作为基础
-FROM kestr3l/stable-diffusion-webui
+FROM ubuntu:22.04
 
-# 设置工作目录为/app
-WORKDIR /app
+RUN apt-get update && apt-get install -y \ 
+	git \
+	python3 \
+	python3-pip \
+	python3-venv \
+	ffmpeg \
+	libsm6 \
+	libxext6 \
+	&& apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# 拷贝当前目录下的所有文件到/app
-COPY . /app
+RUN mkdir /workspace
+RUN useradd -ms /bin/bash user
+RUN chown -R user:user /workspace
+RUN chmod 755 /workspace
+USER user
 
-# 安装依赖包
-RUN pip install -r requirements.txt
+WORKDIR /workspace
 
-# 开放7860端口
+RUN git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git .
+
+RUN python3 -m venv venv/
+
+RUN ./webui.sh --listen --exit --skip-torch-cuda-test --no-download-sd-model
+
 EXPOSE 7860
 
-# 运行webui.py
-CMD ["python", "webui.py"]
+# default command on start
+CMD ["sh", "-c", "./webui.sh --listen --no-download-sd-model"]
