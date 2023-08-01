@@ -1,0 +1,17 @@
+# 使用kestr3l/stable-diffusion-webui镜像作为基础
+FROM kestr3l/stable-diffusion-webui
+
+# 设置工作目录为/app
+WORKDIR /app
+
+# 拷贝当前目录下的所有文件到/app
+COPY . /app
+
+# 安装依赖包
+RUN pip install -r requirements.txt
+
+# 开放7860端口
+EXPOSE 7860
+
+# 运行webui.py
+CMD ["python", "webui.py"]
